@@ -1,13 +1,15 @@
 #include "raylib.h"
+#include "math.h"
 
 const int screenWidth = 800, screenHeight = 800;
 Vector2 center = {(float) screenWidth / 2, (float) screenHeight / 2};
 Vector2 snake[200] = {}, tempSnake[200] = {};
 int snakeLength = 0;
+Vector2 food = {};
 
 void LoadSnake();
 void MoveSnake(int stepX, int stepY);
-
+void SpawnFood();
 
 int main()
 {
@@ -15,6 +17,7 @@ int main()
     SetTargetFPS(60);
 
     LoadSnake();
+    SpawnFood();
 
     while (!WindowShouldClose())
     {
@@ -25,6 +28,7 @@ int main()
 
         BeginDrawing();
             ClearBackground(BLACK);
+            DrawCircle(food.x, food.y, 15, RED);
             for (int i = 0; i < snakeLength; i++)
             {
                 if (i == 0)
@@ -60,5 +64,18 @@ void MoveSnake(int stepX, int stepY)
     {
         tempSnake[j] = snake[j];
         snake[j] = tempSnake[j-1];
+    }
+}
+
+void SpawnFood()
+{
+    // spawn food at random locations
+    food.x = 50 * (rand() % 13 + 2);
+    food.y = 50 * (rand() % 13 + 2);
+
+    if (food.x == center.x && food.y == center.y)
+    {
+        food.x = 50 * (rand() % 13 + 2);
+        food.y = 50 * (rand() % 13 + 2);
     }
 }
