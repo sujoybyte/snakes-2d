@@ -29,6 +29,7 @@ int main()
         else if (IsKeyPressed(KEY_DOWN)) MoveSnake(0, 50);
 
         foodEaten = (snake[0].x == food.x && snake[0].y == food.y);
+
         if (foodEaten)
         {
             SpawnFood();
@@ -57,8 +58,9 @@ void LoadSnake()
     snake[0] = center;
     tempSnake[0] = center;
     snakeLength++;
-    snake[1] = {snake[snakeLength-1].x-50, snake[snakeLength-1].y};
-    tempSnake[1] = {snake[snakeLength-1].x-50, snake[snakeLength-1].y};
+    Vector2 snakeHead = {snake[snakeLength-1].x-50, snake[snakeLength-1].y};;
+    snake[1] = snakeHead;
+    tempSnake[1] = snakeHead;
     snakeLength++;
 }
 
@@ -80,12 +82,15 @@ void GrowSnake()
 {
     // grow snake body by one unit (50 pixels)
     int xDiff = 0, yDiff = 0;
+
     if (snakeLength > 1)
     {
         xDiff = snake[snakeLength-2].x - snake[snakeLength-1].x;
         yDiff = snake[snakeLength-2].y - snake[snakeLength-1].y;
     }
-    snake[snakeLength] = {snake[snakeLength-1].x-xDiff, snake[snakeLength-1].y-yDiff};
+    
+    Vector2 snakeBody = {snake[snakeLength-1].x-xDiff, snake[snakeLength-1].y-yDiff};
+    snake[snakeLength] = snakeBody;
     snakeLength++;
     foodEaten = false;
 }
